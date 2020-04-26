@@ -1,6 +1,5 @@
 <template>
     <div class="login-warp">
-    
     <el-form class="login-form" label-position="right"
         label-width="60px" 
         :model="formdata">
@@ -9,9 +8,11 @@
     <el-input v-model="formdata.username"></el-input>
   </el-form-item>
   <el-form-item label="密码">
-    <el-input text='password' v-model="formdata.password"></el-input>
+    <el-input type='password' v-model="formdata.password"></el-input>
   </el-form-item>
-   <el-button type="primary" plain class="login-btn">登陆</el-button>
+   <el-button type="primary" plain 
+   @click.prevent = "handellogin"
+   class="login-btn">登陆</el-button>
 </el-form>
     </div>
 </template>
@@ -24,6 +25,27 @@ export default {
         passsword: ''
     }
     }
+      },
+      methods:{
+        handellogin(){
+          this.$http.post('login',this.formdata)
+          .then(res=>{
+            console.log(res)
+            const {
+              data,
+              meta:{msg,status}
+            } = res.data
+            if(status === 200){
+              this.$router.push('/home')
+            }else{
+              alert('账号或密码错误')
+            }
+           
+          })
+          .catch(err=>{
+            console.log('账号或密码错误')
+          })
+        }
       }
 }
 </script>

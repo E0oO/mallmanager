@@ -4,9 +4,12 @@ import Vue from 'vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/reset.css'
+import MyHttpServer from '@/plugin/http.js'
 import App from './App'
 import router from './router'
+import {setCookie, getCookie, delCookie} from './util/util.js';
 Vue.use(ElementUI);
+Vue.use(MyHttpServer)
 // 上线 = 生产。 无影响
 Vue.config.productionTip = false
 
@@ -15,5 +18,12 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  beforeMount () {
+    Vue.prototype.$cookieStore = {
+      setCookie,
+      getCookie,
+      delCookie
+    }
+  }
 })
